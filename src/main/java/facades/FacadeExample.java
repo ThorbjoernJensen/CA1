@@ -1,7 +1,8 @@
 package facades;
 
 import dtos.RenameMeDTO;
-import entities.RenameMe;
+import entities.Person;
+
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -39,7 +40,7 @@ public class FacadeExample {
     }
     
     public RenameMeDTO create(RenameMeDTO rm){
-        RenameMe rme = new RenameMe(rm.getDummyStr1(), rm.getDummyStr2());
+        Person rme = new Person(rm.getDummyStr1(), rm.getDummyStr2());
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
@@ -52,14 +53,14 @@ public class FacadeExample {
     }
     public RenameMeDTO getById(long id){
         EntityManager em = emf.createEntityManager();
-        return new RenameMeDTO(em.find(RenameMe.class, id));
+        return new RenameMeDTO(em.find(Person.class, id));
     }
     
     //TODO Remove/Change this before use
     public long getRenameMeCount(){
         EntityManager em = emf.createEntityManager();
         try{
-            long renameMeCount = (long)em.createQuery("SELECT COUNT(r) FROM RenameMe r").getSingleResult();
+            long renameMeCount = (long)em.createQuery("SELECT COUNT(r) FROM Person r").getSingleResult();
             return renameMeCount;
         }finally{  
             em.close();
@@ -68,8 +69,8 @@ public class FacadeExample {
     
     public List<RenameMeDTO> getAll(){
         EntityManager em = emf.createEntityManager();
-        TypedQuery<RenameMe> query = em.createQuery("SELECT r FROM RenameMe r", RenameMe.class);
-        List<RenameMe> rms = query.getResultList();
+        TypedQuery<Person> query = em.createQuery("SELECT r FROM Person r", Person.class);
+        List<Person> rms = query.getResultList();
         return RenameMeDTO.getDtos(rms);
     }
     
