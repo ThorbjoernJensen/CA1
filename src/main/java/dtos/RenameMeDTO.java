@@ -34,7 +34,7 @@ public class RenameMeDTO {
     public RenameMeDTO(Person rm) {
         if(rm.getId() != null)
             this.id = rm.getId();
-        this.str1 = rm.getDummyStr1();
+        this.str1 = rm.getFirstName();
         this.str2 = rm.getDummyStr2();
     }
 
