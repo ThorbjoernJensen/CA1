@@ -14,28 +14,31 @@ import java.util.List;
  *
  * @author tha
  */
-public class RenameMeDTO {
+public class PersonDTO {
     private long id;
     private String str1;
     private String str2;
+    private String str3;
 
-    public RenameMeDTO(String dummyStr1, String dummyStr2) {
+    public PersonDTO(String dummyStr1, String dummyStr2, String dummyStr3) {
         this.str1 = dummyStr1;
         this.str2 = dummyStr2;
+        this.str3 = dummyStr3;
     }
     
-    public static List<RenameMeDTO> getDtos(List<Person> rms){
-        List<RenameMeDTO> rmdtos = new ArrayList();
-        rms.forEach(rm->rmdtos.add(new RenameMeDTO(rm)));
+    public static List<PersonDTO> getDtos(List<Person> rms){
+        List<PersonDTO> rmdtos = new ArrayList();
+        rms.forEach(rm->rmdtos.add(new PersonDTO(rm)));
         return rmdtos;
     }
 
 
-    public RenameMeDTO(Person rm) {
+    public PersonDTO(Person rm) {
         if(rm.getId() != null)
             this.id = rm.getId();
         this.str1 = rm.getFirstName();
         this.str2 = rm.getLastName();
+        this.str3 = rm.getEmail();
     }
 
     public String getDummyStr1() {
@@ -54,14 +57,26 @@ public class RenameMeDTO {
         this.str2 = dummyStr2;
     }
 
+    public String getDummyStr3() {
+        return str3;
+    }
+
+    public void setDummyStr3(String str3) {
+        this.str3 = str3;
+    }
+
+//    @Override
+//    public String toString() {
+//        return "RenameMeDTO{" + "id=" + id + ", str1=" + str1 + ", str2=" + str2 + '}';
+//    }
+
     @Override
     public String toString() {
-        return "RenameMeDTO{" + "id=" + id + ", str1=" + str1 + ", str2=" + str2 + '}';
+        return "RenameMeDTO{" +
+                "id=" + id +
+                ", str1='" + str1 + '\'' +
+                ", str2='" + str2 + '\'' +
+                ", str3='" + str3 + '\'' +
+                '}';
     }
-    
-    
-    
-    
-    
-    
 }

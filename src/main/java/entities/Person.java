@@ -1,11 +1,7 @@
 package entities;
 
 import java.io.Serializable;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedQuery;
+import javax.persistence.*;
 
 
 @Entity
@@ -20,23 +16,33 @@ public class Person implements Serializable {
     public Person() {
     }
 
-    //    private String email;
     private String firstName;
     private String lastName;
+    private String email;
 
-    public Person(/*String email*/ String firstName, String lastName) {
+//    @ManyToOne
+//    private Address address;
+//
+//    public Address getAddress() {
+//        return address;
+//    }
+//    public void setAddress(Address address) {
+//        this.address = address;
+//    }
+
+//    public Person(String firstName, String lastName, String email) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
 //        this.email = email;
+//    }
+
+
+    public Person(String firstName, String lastName, String email/*,Address address*/) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.email = email;
+//        this.address = address;
     }
-
-//    public String getEmail() {
-//        return email;
-//    }
-//
-//    public void setEmail(String email) {
-//        this.email = email;
-//    }
 
     public Long getId() {
         return id;
@@ -62,5 +68,12 @@ public class Person implements Serializable {
         this.lastName = lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
 }
