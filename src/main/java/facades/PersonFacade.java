@@ -9,6 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 
+import entities.Phone;
 import utils.EMF_Creator;
 
 public class PersonFacade {
@@ -84,13 +85,17 @@ public class PersonFacade {
 
         //Tester
         Address a1= new Address("Skøjteby", "vandland");
+        Phone p1= new Phone(123080, "Homenumber");
         Person rme = new Person("Erik", "Hansen", "flotemail@dk");
+        rme.setAddress(a1);
+        rme.addPhone(p1);
+
 //        rme.setAddress(a1);
         a1.addPerson(rme);
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
-            em.persist(a1);
+            em.persist(rme);
 //            em.persist(new Address("Skinkevangen 5000", "hulseby"));
             em.getTransaction().commit();
         } catch (Exception e) {
