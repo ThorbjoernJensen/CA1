@@ -13,35 +13,30 @@ public class Person implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Person() {
-    }
-
     private String firstName;
     private String lastName;
     private String email;
 
-//    @ManyToOne
-//    private Address address;
-//
-//    public Address getAddress() {
-//        return address;
-//    }
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
+    @ManyToOne
+    private Address address;
 
-//    public Person(String firstName, String lastName, String email) {
-//        this.firstName = firstName;
-//        this.lastName = lastName;
-//        this.email = email;
-//    }
+    public Person() {
+    }
 
-
-    public Person(String firstName, String lastName, String email/*,Address address*/) {
+    public Person(String firstName, String lastName, String email) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-//        this.address = address;
+    }
+
+
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Long getId() {
