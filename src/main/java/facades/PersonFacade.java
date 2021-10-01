@@ -2,6 +2,7 @@ package facades;
 
 import dtos.PersonDTO;
 import entities.Address;
+import entities.CityInfo;
 import entities.Person;
 
 import java.util.List;
@@ -85,17 +86,19 @@ public class PersonFacade {
 
         //Tester
         Address a1= new Address("Skøjteby", "vandland");
+        a1.setCityInfo(new CityInfo("1114"));
         Phone p1= new Phone(123080, "Homenumber");
         Person rme = new Person("Erik", "Hansen", "flotemail@dk");
         rme.setAddress(a1);
         rme.addPhone(p1);
 
-//        rme.setAddress(a1);
+        rme.setAddress(a1);
         a1.addPerson(rme);
         EntityManager em = emf.createEntityManager();
         try {
             em.getTransaction().begin();
             em.persist(rme);
+
 //            em.persist(new Address("Skinkevangen 5000", "hulseby"));
             em.getTransaction().commit();
         } catch (Exception e) {

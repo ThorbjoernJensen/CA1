@@ -33,6 +33,7 @@ public class Person implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.phoneList= new ArrayList<>();
+
     }
 
     public void addPhone(Phone phone){
