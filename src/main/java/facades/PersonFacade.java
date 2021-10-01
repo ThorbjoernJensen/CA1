@@ -1,16 +1,13 @@
 package facades;
 
 import dtos.PersonDTO;
-import entities.Address;
-import entities.CityInfo;
-import entities.Person;
+import entities.*;
 
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 
-import entities.Phone;
 import utils.EMF_Creator;
 
 public class PersonFacade {
@@ -89,12 +86,18 @@ public class PersonFacade {
         a1.setCityInfo(new CityInfo("1114"));
         Phone p1= new Phone(123080, "Homenumber");
         Person rme = new Person("Erik", "Hansen", "flotemail@dk");
+        Hobby h1= new Hobby("Ringridning", "Man rider på hest");
+        rme.addHobbies(h1);
         rme.setAddress(a1);
         rme.addPhone(p1);
 
         rme.setAddress(a1);
         a1.addPerson(rme);
+
+
         EntityManager em = emf.createEntityManager();
+
+
         try {
             em.getTransaction().begin();
             em.persist(rme);

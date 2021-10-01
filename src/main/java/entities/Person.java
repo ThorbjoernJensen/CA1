@@ -25,6 +25,9 @@ public class Person implements Serializable {
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
     private List<Phone> phoneList;
 
+    @ManyToMany(mappedBy = "personList",  cascade = CascadeType.PERSIST)
+    private List<Hobby> hobbies;
+
     public Person() {
     }
 
@@ -33,14 +36,36 @@ public class Person implements Serializable {
         this.lastName = lastName;
         this.email = email;
         this.phoneList= new ArrayList<>();
+        this.hobbies=new ArrayList<>();
 
     }
+
+    public void addHobbies(Hobby hobby) {
+        this.hobbies.add(hobby);
+        if(hobby!=null){
+            hobby.getPersonList().add(this);
+        }
+
+    }
+
+    public void removeHobbies(Hobby hobby) {
+        this.hobbies.remove(hobby);
+        if(hobby!=null){
+            hobby.getPersonList().remove(hobby);
+        }
+
+    }
+
 
     public void addPhone(Phone phone){
         this.phoneList.add(phone);
         if (phone!=null){
             phone.setPerson(this);
         }
+    }
+
+    public List<Phone> getPhoneList() {
+        return phoneList;
     }
 
     public Address getAddress() {
