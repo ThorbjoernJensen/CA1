@@ -108,4 +108,7 @@ public class Person implements Serializable {
         this.email = email;
     }
 
+    public void setPhoneList(List<Phone> phoneList) {
+        this.phoneList = phoneList;
+    }
 }

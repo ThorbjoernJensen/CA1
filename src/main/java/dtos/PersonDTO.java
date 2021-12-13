@@ -6,6 +6,7 @@
 package dtos;
 
 import entities.Person;
+import entities.Phone;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,16 +17,18 @@ import java.util.List;
  */
 public class PersonDTO {
     private long id;
-    private String str1;
-    private String str2;
-    private String str3;
+    private String firstName;
+    private String lastName;
+    private String email;
+    private List<Phone> phoneList;
 
-    public PersonDTO(String dummyStr1, String dummyStr2, String dummyStr3) {
-        this.str1 = dummyStr1;
-        this.str2 = dummyStr2;
-        this.str3 = dummyStr3;
+
+    public PersonDTO(String firstName, String lastName, String email) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.email = email;
     }
-    
+
     public static List<PersonDTO> getDtos(List<Person> rms){
         List<PersonDTO> rmdtos = new ArrayList();
         rms.forEach(rm->rmdtos.add(new PersonDTO(rm)));
@@ -33,50 +36,58 @@ public class PersonDTO {
     }
 
 
-    public PersonDTO(Person rm) {
-        if(rm.getId() != null)
-            this.id = rm.getId();
-        this.str1 = rm.getFirstName();
-        this.str2 = rm.getLastName();
-        this.str3 = rm.getEmail();
+    public PersonDTO(Person person) {
+        if(person.getId() != null)
+            this.id = person.getId();
+        this.firstName = person.getFirstName();
+        this.lastName = person.getLastName();
+        this.email = person.getEmail();
+//        phonelist tilføjes
+        this.phoneList=person.getPhoneList();
+
+        // hobbieslist?
     }
 
-    public String getDummyStr1() {
-        return str1;
+    public String getFirstName() {
+        return firstName;
     }
 
-    public void setDummyStr1(String dummyStr1) {
-        this.str1 = dummyStr1;
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
-    public String getDummyStr2() {
-        return str2;
+    public String getLastName() {
+        return lastName;
     }
 
-    public void setDummyStr2(String dummyStr2) {
-        this.str2 = dummyStr2;
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
     }
 
-    public String getDummyStr3() {
-        return str3;
+    public String getEmail() {
+        return email;
     }
 
-    public void setDummyStr3(String str3) {
-        this.str3 = str3;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-//    @Override
-//    public String toString() {
-//        return "RenameMeDTO{" + "id=" + id + ", str1=" + str1 + ", str2=" + str2 + '}';
-//    }
+    public List<Phone> getPhoneList() {
+        return phoneList;
+    }
+
+
+    public void setPhoneList(List<Phone> phoneList) {
+        this.phoneList = phoneList;
+    }
 
     @Override
     public String toString() {
         return "RenameMeDTO{" +
                 "id=" + id +
-                ", str1='" + str1 + '\'' +
-                ", str2='" + str2 + '\'' +
-                ", str3='" + str3 + '\'' +
+                ", str1='" + firstName + '\'' +
+                ", str2='" + lastName + '\'' +
+                ", str3='" + email + '\'' +
                 '}';
     }
 }

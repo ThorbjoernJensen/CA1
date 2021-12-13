@@ -13,15 +13,16 @@ public class Phone {
     private String description;
 
     @ManyToOne (cascade = CascadeType.PERSIST)
+//    @JoinColumn(name="PERSON_ID")
     private Person person;
 
 
     public Phone() {
     }
 
-    public Phone(int number, String description) {
+    public Phone(int number) {
         this.number = number;
-        this.description = description;
+//        this.description = description;
     }
 
     public int getNumber() {

@@ -1,27 +1,32 @@
 package facades;
 
+import dtos.PersonDTO;
+import entities.Phone;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
 import entities.Person;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 //Uncomment the line below, to temporarily disable this test
-@Disabled
+//@Disabled
 public class PersonFacadeTest {
-
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
+    private static Person p1, p2, p3;
 
     public PersonFacadeTest() {
     }
 
     @BeforeAll
     public static void setUpClass() {
-       emf = EMF_Creator.createEntityManagerFactoryForTest();
-       facade = PersonFacade.getFacadeExample(emf);
+        emf = EMF_Creator.createEntityManagerFactoryForTest();
+        facade = PersonFacade.getFacadeExample(emf);
     }
 
     @AfterAll
@@ -53,9 +58,56 @@ public class PersonFacadeTest {
 
     // TODO: Delete or change this method 
     @Test
-    public void testAFacadeMethod() throws Exception {
+    public void testGetPersonCount() throws Exception {
         assertEquals(2, facade.getRenameMeCount(), "Expects two rows in the database");
     }
-    
+
+    @Test
+    public void testAfCreateWithPhone() throws Exception {
+        Person p1 = new Person("Larse", "Tyndskrap", "snabel@");
+        Phone phone = new Phone(35);
+        phone.setDescription("Home");
+        p1.getPhoneList().add(phone);
+        System.out.println("størrelsen på phonelistarray i test er: "+p1.getPhoneList().size());
+        facade.create(new PersonDTO(p1));
+
+        PersonDTO returnedPersonDTO = facade.getPersonByFirstName("Larse");
+        List<Phone> returnedPhones = returnedPersonDTO.getPhoneList();
+        Phone returnedPhone = returnedPhones.get(0);
+        int returnedNumber = returnedPhone.getNumber();
+        String returnedDescription = returnedPhone.getDescription();
+
+        assertEquals(35, returnedNumber);
+        assertEquals("Home", returnedDescription);
+    }
+
+
+    @Test
+    public void getPersonByFirstName() throws Exception{
+        PersonDTO returnedPersonDTO = facade.getPersonByFirstName("Lars");
+        assertEquals("Lars", returnedPersonDTO.getFirstName());
+    }
+
+
+    @Test
+    public void getPersonByPhoneNumber() throws  Exception{
+        Person p1 = new Person("Lars", "Tyndskrap", "snabel@");
+        Phone phone = new Phone(35);
+        phone.setDescription("Home");
+        phone.setPerson(p1);
+        p1.getPhoneList().add(phone);
+        facade.create(new PersonDTO(p1));
+        PersonDTO returnedPersonDTO = facade.getPersonByPhoneNumber(35);
+        assertEquals("Lars", returnedPersonDTO.getFirstName());
+
+
+
+
+
+
+
+    }
+
+
 
 }
