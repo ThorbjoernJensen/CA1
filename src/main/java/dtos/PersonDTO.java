@@ -5,6 +5,7 @@
  */
 package dtos;
 
+import entities.Hobby;
 import entities.Person;
 import entities.Phone;
 
@@ -15,12 +16,14 @@ import java.util.List;
  *
  * @author tha
  */
+
 public class PersonDTO {
     private long id;
     private String firstName;
     private String lastName;
     private String email;
     private List<Phone> phoneList;
+    private List<Hobby> hobbyList;
 
 
     public PersonDTO(String firstName, String lastName, String email) {
@@ -28,13 +31,6 @@ public class PersonDTO {
         this.lastName = lastName;
         this.email = email;
     }
-
-    public static List<PersonDTO> getDtos(List<Person> rms){
-        List<PersonDTO> rmdtos = new ArrayList();
-        rms.forEach(rm->rmdtos.add(new PersonDTO(rm)));
-        return rmdtos;
-    }
-
 
     public PersonDTO(Person person) {
         if(person.getId() != null)
@@ -47,6 +43,14 @@ public class PersonDTO {
 
         // hobbieslist?
     }
+
+    public static List<PersonDTO> getDtos(List<Person> personList){
+        List<PersonDTO> personDTOList = new ArrayList();
+        personList.forEach(rm->personDTOList.add(new PersonDTO(rm)));
+        return personDTOList;
+    }
+
+
 
     public String getFirstName() {
         return firstName;
@@ -83,7 +87,7 @@ public class PersonDTO {
 
     @Override
     public String toString() {
-        return "RenameMeDTO{" +
+        return "PersonDTO{" +
                 "id=" + id +
                 ", str1='" + firstName + '\'' +
                 ", str2='" + lastName + '\'' +

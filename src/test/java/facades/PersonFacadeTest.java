@@ -19,6 +19,7 @@ public class PersonFacadeTest {
     private static EntityManagerFactory emf;
     private static PersonFacade facade;
     private static Person p1, p2, p3;
+    private static Phone ph1, ph2, ph3;
 
     public PersonFacadeTest() {
     }
@@ -34,17 +35,28 @@ public class PersonFacadeTest {
 //        Clean up database after test is done or use a persistence unit with drop-and-create to start up clean on every test
     }
 
-    // Setup the DataBase in a known state BEFORE EACH TEST
-    //TODO -- Make sure to change the code below to use YOUR OWN entity class
+
     @BeforeEach
     public void setUp() {
         EntityManager em = emf.createEntityManager();
+        p1 = new Person("Hansemand", "Tydelig", "snabel@snavs");
+        ph1 = new Phone(38383838);
+        p1.addPhone(ph1);
+
+        p2 = new Person("Lars", "Bobsen", "mail@snail.dk");
+        ph2 = new Phone(39393939);
+        p2.addPhone(ph2);
+
+        p3 = new Person("Poul", "Robsen", "mailse@mail.dk");
+        ph3 = new Phone(40404040);
+        p3.addPhone(ph3);
+
         try {
             em.getTransaction().begin();
-            em.createNamedQuery("RenameMe.deleteAllRows").executeUpdate();
-            em.persist(new Person("Lars", "Bobsen", "mail@mail.dk"));
-            em.persist(new Person("Poul", "Robsen", "mailse@mail.dk"));
-
+            em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.persist(p1);
+            em.persist(p2);
+            em.persist(p3);
             em.getTransaction().commit();
         } finally {
             em.close();
@@ -56,7 +68,7 @@ public class PersonFacadeTest {
 //        Remove any data after each test was run
     }
 
-    // TODO: Delete or change this method 
+    // TODO: Delete or change this method
     @Test
     public void testGetPersonCount() throws Exception {
         assertEquals(2, facade.getRenameMeCount(), "Expects two rows in the database");
@@ -64,50 +76,51 @@ public class PersonFacadeTest {
 
     @Test
     public void testAfCreateWithPhone() throws Exception {
-        Person p1 = new Person("Larse", "Tyndskrap", "snabel@");
-        Phone phone = new Phone(35);
+        Phone phone = new Phone(3599);
         phone.setDescription("Home");
-        p1.getPhoneList().add(phone);
-        System.out.println("størrelsen på phonelistarray i test er: "+p1.getPhoneList().size());
+        p1.addPhone(phone);
+
+//      Det er denne her der giver problemer
+//        p1.getPhoneList().add(phone);
+//        phone bliver added til p1's phonelist men person-objektet bliver ikke knyttet til person-objektet. phone
+//        har ikke nogen reference til person-objektet. der skal peges begge veje, og jeg har kun peget den ene vej, og
+//        troet at den anden vej var implicit.
+//        Person-objektet kan ikke tvinge data ind i phone-objektet.
+
+//        skulle jpa ikke automatisk knytte telefon til person når vi persisterer person?!
+//        phone.setPerson(p1);
+//        denne linie kan vi komme ud over ved blot at bruge den add-funktion vi har i vores personobjekt, da vi her sørger for
+//        at phoneobjektet også peger tilbage på person.
+
+
         facade.create(new PersonDTO(p1));
 
-        PersonDTO returnedPersonDTO = facade.getPersonByFirstName("Larse");
-        List<Phone> returnedPhones = returnedPersonDTO.getPhoneList();
-        Phone returnedPhone = returnedPhones.get(0);
+        PersonDTO returnedPersonDTO = facade.getPersonByFirstName("Hansemand");
+        Phone returnedPhone = returnedPersonDTO.getPhoneList().get(0);
+
         int returnedNumber = returnedPhone.getNumber();
         String returnedDescription = returnedPhone.getDescription();
 
-        assertEquals(35, returnedNumber);
+        assertEquals(3599, returnedNumber);
         assertEquals("Home", returnedDescription);
     }
 
 
     @Test
-    public void getPersonByFirstName() throws Exception{
+    public void getPersonByFirstName() throws Exception {
         PersonDTO returnedPersonDTO = facade.getPersonByFirstName("Lars");
         assertEquals("Lars", returnedPersonDTO.getFirstName());
     }
 
 
     @Test
-    public void getPersonByPhoneNumber() throws  Exception{
-        Person p1 = new Person("Lars", "Tyndskrap", "snabel@");
-        Phone phone = new Phone(35);
-        phone.setDescription("Home");
-        phone.setPerson(p1);
-        p1.getPhoneList().add(phone);
+    public void getPersonByPhoneNumber() throws Exception {
         facade.create(new PersonDTO(p1));
-        PersonDTO returnedPersonDTO = facade.getPersonByPhoneNumber(35);
-        assertEquals("Lars", returnedPersonDTO.getFirstName());
-
-
-
-
-
+        PersonDTO returnedPersonDTO = facade.getPersonByPhoneNumber(38383838);
+        assertEquals("Hansemand", returnedPersonDTO.getFirstName());
 
 
     }
-
 
 
 }

@@ -13,7 +13,6 @@ import javax.ws.rs.WebApplicationException;
 import utils.EMF_Creator;
 
 public class PersonFacade {
-
     private static PersonFacade instance;
     private static EntityManagerFactory emf;
 
@@ -37,22 +36,21 @@ public class PersonFacade {
         return emf.createEntityManager();
     }
 
-    public PersonDTO create(PersonDTO rm) {
-        Person rme = new Person(rm.getFirstName(), rm.getLastName(), rm.getEmail());
-//        vi vil gerne have at der også bliver persisteret et telefonnummer med personen -
-        rme.setPhoneList(rm.getPhoneList());
-        System.out.println("her har vi sat en liste med inhold" + rme.getPhoneList().size());
-        EntityManager em = emf.createEntityManager();
+    public PersonDTO create(PersonDTO personDTO) {
+        Person person = new Person(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getEmail());
+        person.setPhoneList(personDTO.getPhoneList());
+
+//        EntityManager em = emf.createEntityManager();
+        EntityManager em = getEntityManager();
+
         try {
             em.getTransaction().begin();
-            em.persist(rme);
+            em.persist(person);
             em.getTransaction().commit();
-
-
         } finally {
             em.close();
         }
-        return new PersonDTO(rme);
+        return new PersonDTO(person);
     }
 
     public PersonDTO getPersonByFirstName(String firstName) {
@@ -72,23 +70,7 @@ public class PersonFacade {
         try {
 
             Query query = em.createQuery("select p from Person p join p.phoneList t where t.number = :phoneNumber").setParameter("phoneNumber", phoneNumber);
-//            Query query4 = em.createQuery("select e from Employee e where e.salary = (select max(e.salary) from Employee e)")
 
-//            TypedQuery<Phone> query = em.createQuery("select ph from Phone ph where ph.number = :phoneNumber", Phone.class).setParameter("phoneNumber", phoneNumber);
-//            Phone phone = query.getSingleResult();
-//            System.out.println("her har vi et nummer"+phone.getNumber());
-//            System.out.println("her har vi beskrivelse "+phone.getDescription());
-//            Person person = phone.getPerson();
-//            if(phone.getPerson() != null) {
-//                System.out.println("det er ikke helt tomt");
-//            }
-///            System.out.println("vi har fundet denne person"+person.getFirstName());
-
-
-//            TypedQuery<Department> query
-//                    = entityManager.createQuery(
-//                    "SELECT d FROM Employee e, Department d WHERE e.department = d", Department.class);
-//            List<Department> resultList = query.getResultList();
             List<Person> personList = query.getResultList();
             if (personList.size() > 0) {
                 return new PersonDTO(personList.get(0));
@@ -125,25 +107,27 @@ public class PersonFacade {
         return PersonDTO.getDtos(rms);
     }
 
+
+//    only for testing purposes i guess
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         PersonFacade fe = getFacadeExample(emf);
 
-//        //        fe.getAll().forEach(dto -> System.out.println(dto));
+                fe.getAll().forEach(dto -> System.out.println(dto));
 
 
         //Tester
 //        Address a1= new Address("Skøjteby", "vandland");
 //        a1.setCityInfo(new CityInfo("1114"));
         Phone p1 = new Phone(123081);
-        Person rme = new Person("Erik", "Hansen", "flotemail@dk");
+        Person person = new Person("Erik", "Hansen", "flotemail@dk");
 //        Hobby h1= new Hobby("Ringridning", "Man rider på hest");
-//        rme.addHobbies(h1);
-//        rme.setAddress(a1);
-        rme.addPhone(p1);
+//        person.addHobbies(h1);
+//        person.setAddress(a1);
+        person.addPhone(p1);
 //
-//        rme.setAddress(a1);
-//        a1.addPerson(rme);
+//        person.setAddress(a1);
+//        a1.addPerson(person);
 //
 //
         EntityManager em = emf.createEntityManager();
@@ -151,7 +135,7 @@ public class PersonFacade {
 
         try {
             em.getTransaction().begin();
-            em.persist(rme);
+            em.persist(person);
 
 //            em.persist(new Address("Skinkevangen 5000", "hulseby"));
             em.getTransaction().commit();

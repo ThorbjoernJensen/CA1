@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 
 @Entity
-@NamedQuery(name = "RenameMe.deleteAllRows", query = "DELETE from Person")
+@NamedQuery(name = "Person.deleteAllRows", query = "DELETE from Person")
 public class Person implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -19,13 +19,15 @@ public class Person implements Serializable {
     private String lastName;
     private String email;
 
-    @ManyToOne (cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
+//her oprettes adresse-id som fremmednøgle i person-tabellen
     private Address address;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)
+//    her oprettes der ikke noget i persontabel, men person oprettes som fremmednøgle i telefon-tabel
     private List<Phone> phoneList;
 
-    @ManyToMany(mappedBy = "personList",  cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "personList", cascade = CascadeType.PERSIST)
     private List<Hobby> hobbies;
 
     public Person() {
@@ -35,14 +37,22 @@ public class Person implements Serializable {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
-        this.phoneList= new ArrayList<>();
-        this.hobbies=new ArrayList<>();
+        this.phoneList = new ArrayList<>();
+        this.hobbies = new ArrayList<>();
 
     }
 
-    public void addHobbies(Hobby hobby) {
+//    public Person(String firstName, String lastName, String email, List<Phone> phoneList) {
+//        this.firstName = firstName;
+//        this.lastName = lastName;
+//        this.email = email;
+//        this.phoneList = new ArrayList<>();
+//        this.hobbies = new ArrayList<>();
+
+
+        public void addHobbies(Hobby hobby) {
         this.hobbies.add(hobby);
-        if(hobby!=null){
+        if (hobby != null) {
             hobby.getPersonList().add(this);
         }
 
@@ -50,16 +60,16 @@ public class Person implements Serializable {
 
     public void removeHobbies(Hobby hobby) {
         this.hobbies.remove(hobby);
-        if(hobby!=null){
+        if (hobby != null) {
             hobby.getPersonList().remove(hobby);
         }
 
     }
 
 
-    public void addPhone(Phone phone){
+    public void addPhone(Phone phone) {
         this.phoneList.add(phone);
-        if (phone!=null){
+        if (phone != null) {
             phone.setPerson(this);
         }
     }
@@ -110,5 +120,8 @@ public class Person implements Serializable {
 
     public void setPhoneList(List<Phone> phoneList) {
         this.phoneList = phoneList;
+    }
+
+    public void setPhoneList() {
     }
 }
