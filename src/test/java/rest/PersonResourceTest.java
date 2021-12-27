@@ -16,7 +16,6 @@ import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
 import static org.hamcrest.Matchers.equalTo;
 
-//Uncomment the line below, to temporarily disable this test
 @Disabled
 public class PersonResourceTest {
 
