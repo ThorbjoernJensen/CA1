@@ -11,6 +11,7 @@ import entities.Phone;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  *
@@ -44,6 +45,7 @@ public class PersonDTO {
         // hobbieslist?
     }
 
+   //hvad pokker skal vi bruge det til?
     public static List<PersonDTO> getDtos(List<Person> personList){
         List<PersonDTO> personDTOList = new ArrayList();
         personList.forEach(rm->personDTOList.add(new PersonDTO(rm)));
@@ -93,5 +95,18 @@ public class PersonDTO {
                 ", str2='" + lastName + '\'' +
                 ", str3='" + email + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PersonDTO personDTO = (PersonDTO) o;
+        return Objects.equals(firstName, personDTO.firstName) && Objects.equals(lastName, personDTO.lastName) && Objects.equals(email, personDTO.email) && Objects.equals(phoneList, personDTO.phoneList) && Objects.equals(hobbyList, personDTO.hobbyList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email, phoneList, hobbyList);
     }
 }

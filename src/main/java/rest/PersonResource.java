@@ -29,7 +29,7 @@ public class PersonResource {
     @Produces({MediaType.APPLICATION_JSON})
     public String getRenameMeCount() {
        
-        long count = FACADE.getRenameMeCount();
+        long count = FACADE.getPersonCount();
         //System.out.println("--------------->"+count);
         return "{\"count\":"+count+"}";  //Done manually so no need for a DTO
     }

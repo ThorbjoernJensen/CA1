@@ -3,6 +3,7 @@ package facades;
 import dtos.PersonDTO;
 import entities.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -36,7 +37,7 @@ public class PersonFacade {
         return emf.createEntityManager();
     }
 
-    public PersonDTO create(PersonDTO personDTO) {
+    public PersonDTO addPerson(PersonDTO personDTO) {
         Person person = new Person(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getEmail());
         person.setPhoneList(personDTO.getPhoneList());
 
@@ -53,11 +54,17 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
-    public PersonDTO getPersonByFirstName(String firstName) {
+//    denne metode giver kun den funktion at returnere alle personer med et bestemt fornavn.
+    public List<PersonDTO> getPersonsByFirstName(String firstName) {
         EntityManager em = emf.createEntityManager();
         try {
             TypedQuery<Person> query = em.createQuery("select p from Person p where p.firstName = :firstName", Person.class).setParameter("firstName", firstName);
-            return new PersonDTO(query.getSingleResult());
+            List<Person> persons = query.getResultList();
+            List<PersonDTO> personDTOList = new ArrayList<>();
+            for (Person person : persons) {
+                personDTOList.add(new PersonDTO(person));
+            }
+            return personDTOList;
 
         } finally {
             em.close();
@@ -90,7 +97,7 @@ public class PersonFacade {
     }
 
     //TODO Remove/Change this before use
-    public long getRenameMeCount() {
+    public long getPersonCount() {
         EntityManager em = emf.createEntityManager();
         try {
             long renameMeCount = (long) em.createQuery("SELECT COUNT(r) FROM Person r").getSingleResult();

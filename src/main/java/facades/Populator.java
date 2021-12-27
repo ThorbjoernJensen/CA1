@@ -18,8 +18,8 @@ public class Populator {
     public static void populate(){
         EntityManagerFactory emf = EMF_Creator.createEntityManagerFactory();
         PersonFacade fe = PersonFacade.getFacadeExample(emf);
-        fe.create(new PersonDTO(new Person("First 1", "Last 1", "email1")));
-        fe.create(new PersonDTO(new Person("First 2", "Last 2", "email2")));
+        fe.addPerson(new PersonDTO(new Person("First 1", "Last 1", "email1")));
+        fe.addPerson(new PersonDTO(new Person("First 2", "Last 2", "email2")));
 
 
     }

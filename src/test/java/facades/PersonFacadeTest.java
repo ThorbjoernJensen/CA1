@@ -53,6 +53,7 @@ public class PersonFacadeTest {
 
         try {
             em.getTransaction().begin();
+            em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
             em.persist(p1);
             em.persist(p2);
@@ -68,10 +69,9 @@ public class PersonFacadeTest {
 //        Remove any data after each test was run
     }
 
-    // TODO: Delete or change this method
     @Test
     public void testGetPersonCount() throws Exception {
-        assertEquals(2, facade.getRenameMeCount(), "Expects two rows in the database");
+        assertEquals(3, facade.getPersonCount());
     }
 
     @Test
@@ -92,30 +92,34 @@ public class PersonFacadeTest {
 //        denne linie kan vi komme ud over ved blot at bruge den add-funktion vi har i vores personobjekt, da vi her sørger for
 //        at phoneobjektet også peger tilbage på person.
 
+//        System.out.println("er p1 født med et id? så kommer det her: "+p1.getId());
+//        p1 bliver persisteret i setup, det er derfor den har et id.
 
-        facade.create(new PersonDTO(p1));
+        PersonDTO resultDTO = facade.addPerson(new PersonDTO(p1));
+        PersonDTO expectedDTO = new PersonDTO(p1);
 
-        PersonDTO returnedPersonDTO = facade.getPersonByFirstName("Hansemand");
-        Phone returnedPhone = returnedPersonDTO.getPhoneList().get(0);
-
-        int returnedNumber = returnedPhone.getNumber();
-        String returnedDescription = returnedPhone.getDescription();
-
-        assertEquals(3599, returnedNumber);
-        assertEquals("Home", returnedDescription);
+//        I stedet for at sætte id kunstigt har jeg valgt at slette den fra equals funktionen.
+        assertEquals(expectedDTO, resultDTO);
+        // hvad har jeg tænkt at jeg testede her?
+//        PersonDTO returnedPersonDTO = facade.getPersonsByFirstName("Hansemand");
+//        Phone returnedPhone = returnedPersonDTO.getPhoneList().get(0);
+//        int returnedNumber = returnedPhone.getNumber();
+//        String returnedDescription = returnedPhone.getDescription();
+//        assertEquals(3599, returnedNumber);
+//        assertEquals("Home", returnedDescription);
     }
 
 
     @Test
     public void getPersonByFirstName() throws Exception {
-        PersonDTO returnedPersonDTO = facade.getPersonByFirstName("Lars");
-        assertEquals("Lars", returnedPersonDTO.getFirstName());
+        List<PersonDTO> returnedPersonsDTO = facade.getPersonsByFirstName("Lars");
+        assertEquals("Lars", returnedPersonsDTO.get(0).getFirstName());
     }
 
 
     @Test
     public void getPersonByPhoneNumber() throws Exception {
-        facade.create(new PersonDTO(p1));
+        facade.addPerson(new PersonDTO(p1));
         PersonDTO returnedPersonDTO = facade.getPersonByPhoneNumber(38383838);
         assertEquals("Hansemand", returnedPersonDTO.getFirstName());
 
