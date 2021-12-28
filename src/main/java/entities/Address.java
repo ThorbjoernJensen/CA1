@@ -7,6 +7,7 @@ import java.util.List;
 
 //@Table(name = "address")
 @Entity
+@NamedQuery(name = "Address.deleteAllRows", query = "DELETE from Address")
 public class Address implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,9 +26,10 @@ public class Address implements Serializable {
     public Address() {
     }
 
-    public Address(String street, String additionalInfo) {
+    public Address(String street, String additionalInfo, CityInfo cityInfo) {
         this.street = street;
         this.additionalInfo = additionalInfo;
+        this.cityInfo = cityInfo;
         this.persons=new ArrayList<>();
     }
 

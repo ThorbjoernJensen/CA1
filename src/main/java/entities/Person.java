@@ -20,7 +20,7 @@ public class Person implements Serializable {
     private String email;
 
     @ManyToOne(cascade = CascadeType.PERSIST)
-//her oprettes adresse-id som fremmednøgle i person-tabellen
+//her oprettes adresse-id som fremmednøgle i person-tabellen. Det vil sige at det er person der peger. (hvordan peger adresse tilbage?)
     private Address address;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.PERSIST)

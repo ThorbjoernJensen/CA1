@@ -40,10 +40,8 @@ public class PersonFacade {
     public PersonDTO addPerson(PersonDTO personDTO) {
         Person person = new Person(personDTO.getFirstName(), personDTO.getLastName(), personDTO.getEmail());
         person.setPhoneList(personDTO.getPhoneList());
-
 //        EntityManager em = emf.createEntityManager();
         EntityManager em = getEntityManager();
-
         try {
             em.getTransaction().begin();
             em.persist(person);
@@ -54,7 +52,7 @@ public class PersonFacade {
         return new PersonDTO(person);
     }
 
-//    denne metode giver kun den funktion at returnere alle personer med et bestemt fornavn.
+//    denne metode giver kun den funktion at returnere alle personer med et bestemt fornavn. måske lidt tvivlsomt
     public List<PersonDTO> getPersonsByFirstName(String firstName) {
         EntityManager em = emf.createEntityManager();
         try {
@@ -71,20 +69,15 @@ public class PersonFacade {
         }
     }
 
-
+//vi gå ud fra at der i praksis kun er en person med et givent telefonnummer, så selvom vi henter en liste tager vi bare den første.
     public PersonDTO getPersonByPhoneNumber(int phoneNumber) {
         EntityManager em = emf.createEntityManager();
         try {
-
             Query query = em.createQuery("select p from Person p join p.phoneList t where t.number = :phoneNumber").setParameter("phoneNumber", phoneNumber);
-
             List<Person> personList = query.getResultList();
             if (personList.size() > 0) {
                 return new PersonDTO(personList.get(0));
             } else throw new WebApplicationException("No person found", 400);
-
-//            return new PersonDTO(new Person("Lasse", "from", "@"));
-
         } finally {
             em.close();
         }
@@ -96,12 +89,11 @@ public class PersonFacade {
         return new PersonDTO(em.find(Person.class, id));
     }
 
-    //TODO Remove/Change this before use
     public long getPersonCount() {
         EntityManager em = emf.createEntityManager();
         try {
-            long renameMeCount = (long) em.createQuery("SELECT COUNT(r) FROM Person r").getSingleResult();
-            return renameMeCount;
+            long personCount = (long) em.createQuery("SELECT COUNT(r) FROM Person r").getSingleResult();
+            return personCount;
         } finally {
             em.close();
         }
@@ -119,9 +111,7 @@ public class PersonFacade {
     public static void main(String[] args) {
         emf = EMF_Creator.createEntityManagerFactory();
         PersonFacade fe = getFacadeExample(emf);
-
                 fe.getAll().forEach(dto -> System.out.println(dto));
-
 
         //Tester
 //        Address a1= new Address("Skøjteby", "vandland");
@@ -132,13 +122,10 @@ public class PersonFacade {
 //        person.addHobbies(h1);
 //        person.setAddress(a1);
         person.addPhone(p1);
-//
 //        person.setAddress(a1);
 //        a1.addPerson(person);
-//
-//
-        EntityManager em = emf.createEntityManager();
 
+        EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
@@ -150,6 +137,5 @@ public class PersonFacade {
             e.printStackTrace();
         }
         System.out.println(p1.getPerson().getId());
-
     }
 }

@@ -1,6 +1,8 @@
 package facades;
 
 import dtos.PersonDTO;
+import entities.Address;
+import entities.CityInfo;
 import entities.Phone;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
@@ -20,6 +22,7 @@ public class PersonFacadeTest {
     private static PersonFacade facade;
     private static Person p1, p2, p3;
     private static Phone ph1, ph2, ph3;
+    private static Address a1, a2, a3;
 
     public PersonFacadeTest() {
     }
@@ -41,20 +44,27 @@ public class PersonFacadeTest {
         EntityManager em = emf.createEntityManager();
         p1 = new Person("Hansemand", "Tydelig", "snabel@snavs");
         ph1 = new Phone(38383838);
+        a1 = new Address("Bermudavej", "additionalinfo", new CityInfo("0800"));
+        p1.setAddress(a1);
         p1.addPhone(ph1);
 
         p2 = new Person("Lars", "Bobsen", "mail@snail.dk");
         ph2 = new Phone(39393939);
+        a2 = new Address("Bentevej", "additionalinfo", new CityInfo("5000"));
+        p2.setAddress(a2);
         p2.addPhone(ph2);
 
         p3 = new Person("Poul", "Robsen", "mailse@mail.dk");
         ph3 = new Phone(40404040);
+        a3 = new Address("Skælskørvej", "additionalinfo", new CityInfo("0800"));
+        p3.setAddress(a3);
         p3.addPhone(ph3);
 
         try {
             em.getTransaction().begin();
             em.createNamedQuery("Phone.deleteAllRows").executeUpdate();
             em.createNamedQuery("Person.deleteAllRows").executeUpdate();
+            em.createNamedQuery("Address.deleteAllRows").executeUpdate();
             em.persist(p1);
             em.persist(p2);
             em.persist(p3);
@@ -75,38 +85,15 @@ public class PersonFacadeTest {
     }
 
     @Test
-    public void testAfCreateWithPhone() throws Exception {
+    public void testAddPerson() throws Exception {
         Phone phone = new Phone(3599);
         phone.setDescription("Home");
         p1.addPhone(phone);
-
-//      Det er denne her der giver problemer
-//        p1.getPhoneList().add(phone);
-//        phone bliver added til p1's phonelist men person-objektet bliver ikke knyttet til person-objektet. phone
-//        har ikke nogen reference til person-objektet. der skal peges begge veje, og jeg har kun peget den ene vej, og
-//        troet at den anden vej var implicit.
-//        Person-objektet kan ikke tvinge data ind i phone-objektet.
-
-//        skulle jpa ikke automatisk knytte telefon til person når vi persisterer person?!
-//        phone.setPerson(p1);
-//        denne linie kan vi komme ud over ved blot at bruge den add-funktion vi har i vores personobjekt, da vi her sørger for
-//        at phoneobjektet også peger tilbage på person.
-
-//        System.out.println("er p1 født med et id? så kommer det her: "+p1.getId());
-//        p1 bliver persisteret i setup, det er derfor den har et id.
-
         PersonDTO resultDTO = facade.addPerson(new PersonDTO(p1));
         PersonDTO expectedDTO = new PersonDTO(p1);
 
 //        I stedet for at sætte id kunstigt har jeg valgt at slette den fra equals funktionen.
         assertEquals(expectedDTO, resultDTO);
-        // hvad har jeg tænkt at jeg testede her?
-//        PersonDTO returnedPersonDTO = facade.getPersonsByFirstName("Hansemand");
-//        Phone returnedPhone = returnedPersonDTO.getPhoneList().get(0);
-//        int returnedNumber = returnedPhone.getNumber();
-//        String returnedDescription = returnedPhone.getDescription();
-//        assertEquals(3599, returnedNumber);
-//        assertEquals("Home", returnedDescription);
     }
 
 
