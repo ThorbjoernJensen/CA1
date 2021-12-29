@@ -1,12 +1,9 @@
 package facades;
 
 import dtos.PersonDTO;
-import entities.Address;
-import entities.CityInfo;
-import entities.Phone;
+import entities.*;
 import org.junit.jupiter.api.*;
 import utils.EMF_Creator;
-import entities.Person;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,6 +20,7 @@ public class PersonFacadeTest {
     private static Person p1, p2, p3;
     private static Phone ph1, ph2, ph3;
     private static Address a1, a2, a3;
+    private static Hobby h1, h2, h3;
 
     public PersonFacadeTest() {
     }
@@ -59,6 +57,7 @@ public class PersonFacadeTest {
         a3 = new Address("Skælskørvej", "additionalinfo", new CityInfo("0800"));
         p3.setAddress(a3);
         p3.addPhone(ph3);
+
 
         try {
             em.getTransaction().begin();
