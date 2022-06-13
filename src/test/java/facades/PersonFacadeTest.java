@@ -85,14 +85,21 @@ public class PersonFacadeTest {
 
     @Test
     public void testAddPerson() throws Exception {
+        Person p4 = new Person("Preben", "Jakobsdottir", "mail@mæil.dk");
         Phone phone = new Phone(3599);
         phone.setDescription("Home");
-        p1.addPhone(phone);
-        PersonDTO resultDTO = facade.addPerson(new PersonDTO(p1));
-        PersonDTO expectedDTO = new PersonDTO(p1);
+        p4.addPhone(phone);
+
+        PersonDTO resultDTO = facade.addPerson(new PersonDTO(p4));
+        PersonDTO expectedDTO = new PersonDTO(p4);
+        assertEquals(expectedDTO, resultDTO);
+
+        int expectedNumber = 3599;
+//        Testen er her afhængig af der kun er et telefonnummer i listen
+        int resultNumber = resultDTO.getPhoneList().get(0).getNumber();
+        assertEquals(expectedNumber, resultNumber);
 
 //        I stedet for at sætte id kunstigt har jeg valgt at slette den fra equals funktionen.
-        assertEquals(expectedDTO, resultDTO);
     }
 
 
@@ -102,15 +109,9 @@ public class PersonFacadeTest {
         assertEquals("Lars", returnedPersonsDTO.get(0).getFirstName());
     }
 
-
     @Test
-    public void getPersonByPhoneNumber() throws Exception {
-        facade.addPerson(new PersonDTO(p1));
-        PersonDTO returnedPersonDTO = facade.getPersonByPhoneNumber(38383838);
-        assertEquals("Hansemand", returnedPersonDTO.getFirstName());
-
-
+    void getPersonByEmail() {
+        PersonDTO returnedPersonsDTO = facade.getPersonByEmail("snabel@snavs");
+        assertEquals("Hansemand", returnedPersonsDTO.getFirstName());
     }
-
-
 }
