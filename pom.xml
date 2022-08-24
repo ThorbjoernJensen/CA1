@@ -18,7 +18,6 @@
         <!-- IMPORTANT-2: Observe we are NOT using /manager/html but /manager/text for script uploads --> 
 	<remote.server>https://www.dengamlegymnastiksal.dk/manager/text</remote.server>
 
-
         <!-- TODO: Add your own database name -->
         <!-- IMPORTANT-1: The database should exist on your droplet -->
         <db.name>ca1</db.name>

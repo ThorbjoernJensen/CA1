@@ -8,13 +8,14 @@
         <outputRelativeToContentRoot value="true" />
         <module name="devops-starter" />
         <module name="dat3-startcode" />
-        <module name="CA1" />
+        <module name="Persons" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
-      <module name="CA1" options="-endorseddirs &quot;C:\Users\Lenovo\OneDrive\CPH-business\3. semester\Opgaver-dat\CA1\target/endorsed&quot;" />
+      <module name="CA1" options="-endorseddirs &quot;C:\Users\thorb\OneDrive\CPH-business\3. semester\Opgaver-dat\CA1\target/endorsed&quot;" />
+      <module name="Persons" options="-endorseddirs &quot;C:\Users\Lenovo\OneDrive\CPH-business\3. semester\Opgaver-dat\CA1\target/endorsed&quot;" />
       <module name="dat3-startcode" options="-endorseddirs &quot;C:\Users\Lenovo\OneDrive\CPH-business\3. semester\JavaProjekter\FriskStartkode\dat3-startcode\target/endorsed&quot;" />
       <module name="devops-starter" options="-endorseddirs $PROJECT_DIR$/target/endorsed" />
     </option>
